@@ -102,7 +102,7 @@ public class TestProposition {
     private void assertResultat(Reponse reponse, Lettre... resultatAttendu) {
         for (int position = 0; position < resultatAttendu.length; position++) {
             Lettre attendue = resultatAttendu[position];
-            assertThat(reponse.lettre(position)).isEqualTo(attendue);
+            assertThat(reponse.getLettreAtIndex(position)).isEqualTo(attendue);
         }
     }
 }

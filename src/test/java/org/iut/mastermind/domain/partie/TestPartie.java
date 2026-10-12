@@ -32,7 +32,7 @@ public class TestPartie {
     void doitRenvoyerResultatPourLaProposition() {
         givenPartieEnregistree(Partie.nouvelle(JOUEUR, MOT_CORRECT));
         ResultatPartie res = mastermind.evaluation(JOUEUR, MOT_INCORRECT);
-        Lettre premiereLettre = res.resultat().lettre(0);
+        Lettre premiereLettre = res.resultat().getLettreAtIndex(0);
         assertThat(premiereLettre).isEqualTo(Lettre.NON_PLACEE);
     }
 
