@@ -26,7 +26,7 @@ public class PartieRepositoryPostgres implements PartieRepository {
     public void create(Partie partie) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(INSERT_NOUVELLE_PARTIE)) {
-            pstmt.setString(1, partie.getJoueur().getNom());
+            pstmt.setString(1, partie.getJoueur().nom());
             pstmt.setString(2, partie.getMot());
             pstmt.setInt(3, partie.getNbEssais());
             pstmt.setBoolean(4, partie.isTerminee());
@@ -40,7 +40,7 @@ public class PartieRepositoryPostgres implements PartieRepository {
     public Optional<Partie> getPartieEnregistree(Joueur joueur) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(FIND_PARTIE_POUR_JOUEUR)) {
-            pstmt.setString(1, joueur.getNom());
+            pstmt.setString(1, joueur.nom());
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     String nom = rs.getString("nom_joueur");
@@ -61,7 +61,7 @@ public class PartieRepositoryPostgres implements PartieRepository {
              PreparedStatement pstmt = connection.prepareStatement(UPDATE_PARTIE_POUR_JOUEUR)) {
             pstmt.setInt(1, partie.getNbEssais());
             pstmt.setBoolean(2, partie.isTerminee());
-            pstmt.setString(3, partie.getJoueur().getNom());
+            pstmt.setString(3, partie.getJoueur().nom());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de la mise à jour de la partie", e);
