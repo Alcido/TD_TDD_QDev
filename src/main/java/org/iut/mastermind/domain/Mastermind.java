@@ -19,10 +19,6 @@ public class Mastermind {
         this.serviceTirageMot = new ServiceTirageMot(mr, na);
     }
 
-    // on récupère éventuellement la partie enregistrée pour le joueur
-    // si il y a une partie en cours, on renvoie false (pas de nouvelle partie)
-    // sinon on utilise le service de tirage aléatoire pour obtenir un mot
-    // et on initialise une nouvelle partie et on la stocke
     public boolean nouvellePartie(Joueur joueur) {
         Optional<Partie> partieEnCours = partieRepository.getPartieEnregistree(joueur);
         if (partieEnCours.isEmpty()) {
@@ -33,34 +29,21 @@ public class Mastermind {
         } else return false;
     }
 
-    // on récupère éventuellement la partie enregistrée pour le joueur
-    // si la partie n'est pas une partie en cours, on renvoie une erreur
-    // sinon on retourne le resultat du mot proposé
     public ResultatPartie evaluation(Joueur joueur, String motPropose) {
         Optional<Partie> partieEnCours = partieRepository.getPartieEnregistree(joueur);
         if (partieEnCours.isEmpty()) {
             return ResultatPartie.ERROR;
         } else {
             Partie p = partieEnCours.get();
-            Reponse rep = p.tourDeJeu(motPropose);
-            partieRepository.update(p);
-            if (p.isTerminee()) return new ResultatPartie(rep, p.isTerminee(), true);
-            return ResultatPartie.create(rep, p.isTerminee());
+            return calculeResultat(p, motPropose);
         }
     }
 
-    // on évalue le résultat du mot proposé pour le tour de jeu
-    // on met à jour la bd pour la partie
-    // on retourne le résulat de la partie
-    private ResultatPartie calculeResultat(Partie partie, String motPropose) {
-        ResultatPartie res = evaluation(partie.getJoueur(), motPropose);
-        partieRepository.update(partie);
-        return res;
-    }
 
-    // si la partie en cours est vide, on renvoie false
-    // sinon, on évalue si la partie est terminée
-    private boolean isJeuEnCours(Optional<Partie> partieEnCours) {
-        return false;
+    private ResultatPartie calculeResultat(Partie partie, String motPropose) {
+        Reponse rep = partie.tourDeJeu(motPropose);
+        partieRepository.update(partie);
+        if (partie.isTerminee()) return new ResultatPartie(rep, partie.isTerminee(), true);
+        return ResultatPartie.create(rep, partie.isTerminee());
     }
 }

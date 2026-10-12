@@ -44,10 +44,16 @@ public class Partie {
     public Reponse tourDeJeu(String motPropose) {
         Reponse rep = new Reponse(motADeviner);
         if (isTerminee()) return rep;
+
         rep.compare(motPropose);
         nbEssais++;
-        if (nbEssais >= NB_ESSAIS_MAX || rep.lettresToutesPlacees()) terminerPartie();
+
+        if (doitTerminer(rep)) terminerPartie();
         return rep;
+    }
+
+    private boolean doitTerminer(Reponse rep) {
+        return nbEssais >= NB_ESSAIS_MAX || rep.lettresToutesPlacees();
     }
 
     public boolean isTerminee() {
