@@ -41,6 +41,30 @@ public class TestProposition {
     }
 
     @Test
+    @DisplayName("contient que des lettre correctes avec des lettres répétées")
+    public void casCombinaisons2() {
+        var mot = new MotSecret("ERROR");
+        var reponse = mot.compareProposition("ERROR");
+        assertResultat(reponse,  PLACEE, PLACEE,PLACEE, PLACEE, PLACEE);
+    }
+
+    @Test
+    @DisplayName("contient une lettre mal placée et le reste correcte")
+    public void casCombinaisons3() {
+        var mot = new MotSecret("ERROR");
+        var reponse = mot.compareProposition("ERORR");
+        assertResultat(reponse,  PLACEE, PLACEE,NON_PLACEE, NON_PLACEE, PLACEE);
+    }
+
+    @Test
+    @DisplayName("contient 2 lettres mal pacées identiques (RR) et le reste mal placé")
+    public void casCombinaisons4() {
+        var mot = new MotSecret("TEST");
+        var reponse = mot.compareProposition("DTTD");
+        assertResultat(reponse, INCORRECTE, NON_PLACEE, NON_PLACEE, INCORRECTE);
+    }
+
+    @Test
     @DisplayName("contient toutes les lettres placées")
     void casToutesLettresPlacees() {
         var mot = new MotSecret("SOLID");
