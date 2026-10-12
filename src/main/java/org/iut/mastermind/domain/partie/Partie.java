@@ -1,6 +1,5 @@
 package org.iut.mastermind.domain.partie;
 
-import org.iut.mastermind.domain.proposition.MotSecret;
 import org.iut.mastermind.domain.proposition.Reponse;
 
 public class Partie {
@@ -25,18 +24,15 @@ public class Partie {
         return new Partie(joueur, motADeviner, nbEssais, false);
     }
 
-    // getter joueur
     public Joueur getJoueur() {
         return joueur;
     }
 
-    // getter nombre d'essais
-    public int getNbEssais() {
+    public int getNbEssaisRestant() {
         return nbEssais;
     }
 
-    // getter mot à deviner
-    public String getMot() {
+    public String getMotADeviner() {
         return motADeviner;
     }
 
@@ -50,17 +46,15 @@ public class Partie {
         if (isTerminee()) return rep;
         rep.compare(motPropose);
         nbEssais++;
-        if (nbEssais >= NB_ESSAIS_MAX || rep.lettresToutesPlacees()) done();
+        if (nbEssais >= NB_ESSAIS_MAX || rep.lettresToutesPlacees()) terminerPartie();
         return rep;
     }
 
-    // getter pour savoir si la partie est terminée
     public boolean isTerminee() {
         return partieTerminee;
     }
 
-    // indique que la partie est terminée
-    void done() {
+    void terminerPartie() {
         this.partieTerminee = true;
     }
 }

@@ -27,8 +27,8 @@ public class PartieRepositoryPostgres implements PartieRepository {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(INSERT_NOUVELLE_PARTIE)) {
             pstmt.setString(1, partie.getJoueur().nom());
-            pstmt.setString(2, partie.getMot());
-            pstmt.setInt(3, partie.getNbEssais());
+            pstmt.setString(2, partie.getMotADeviner());
+            pstmt.setInt(3, partie.getNbEssaisRestant());
             pstmt.setBoolean(4, partie.isTerminee());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -59,7 +59,7 @@ public class PartieRepositoryPostgres implements PartieRepository {
     public void update(Partie partie) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(UPDATE_PARTIE_POUR_JOUEUR)) {
-            pstmt.setInt(1, partie.getNbEssais());
+            pstmt.setInt(1, partie.getNbEssaisRestant());
             pstmt.setBoolean(2, partie.isTerminee());
             pstmt.setString(3, partie.getJoueur().nom());
             pstmt.executeUpdate();

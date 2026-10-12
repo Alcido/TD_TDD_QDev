@@ -42,7 +42,7 @@ public class TestPartie {
         givenPartieEnregistree(Partie.nouvelle(JOUEUR, MOT_CORRECT));
         mastermind.evaluation(JOUEUR, MOT_INCORRECT);
         var partie = getPartieMAJDansRepository();
-        assertThat(partie.getNbEssais()).isEqualTo(1);
+        assertThat(partie.getNbEssaisRestant()).isEqualTo(1);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class TestPartie {
     @DisplayName("lève une erreur quand la partie est terminée")
     void doitLeverErreurQuandJeuTermine(){
         var partie = Partie.nouvelle(JOUEUR, MOT_CORRECT);
-        partie.done();
+        partie.terminerPartie();
         givenPartieEnregistree( partie );
         ResultatPartie result = mastermind.evaluation(JOUEUR, MOT_INCORRECT);
         assertThat(result.isError()).isTrue();

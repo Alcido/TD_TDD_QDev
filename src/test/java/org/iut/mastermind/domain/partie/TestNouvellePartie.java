@@ -39,8 +39,8 @@ public class TestNouvellePartie {
         givenMotSelectionne(MOT_CORRECT);
         mastermind.nouvellePartie(JOUEUR);
         Partie partie = getPartieEnregistree();
-        assertThat(partie.getMot()).isEqualTo(MOT_CORRECT);
-        assertThat(partie.getNbEssais()).isZero();
+        assertThat(partie.getMotADeviner()).isEqualTo(MOT_CORRECT);
+        assertThat(partie.getNbEssaisRestant()).isZero();
         assertThat(partie.getJoueur()).isSameAs(JOUEUR);
     }
 
