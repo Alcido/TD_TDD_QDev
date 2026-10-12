@@ -65,6 +65,16 @@ public class TestProposition {
     }
 
     @Test
+    @DisplayName("contient 2 lettres mal pacées identiques (RR) et le reste mal placé")
+    public void casCombinaisons5() {
+        var mot = new MotSecret("SLEEP");
+        var reponse = mot.compareProposition("TESTS");
+        assertResultat(reponse, INCORRECTE, NON_PLACEE, NON_PLACEE, INCORRECTE, INCORRECTE);
+    }
+
+
+
+    @Test
     @DisplayName("contient toutes les lettres placées")
     void casToutesLettresPlacees() {
         var mot = new MotSecret("SOLID");

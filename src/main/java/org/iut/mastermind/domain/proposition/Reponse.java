@@ -1,8 +1,6 @@
 package org.iut.mastermind.domain.proposition;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Reponse {
     private final String motSecret;
@@ -22,22 +20,30 @@ public class Reponse {
     // du mot proposé
     public void compare(String essai) {
         if (essai.length() != motSecret.length()) throw new IllegalArgumentException("Mot trop long");
-        for (int i = 0; i< motSecret.length(); i++) {
+        for (int i = 0; i < motSecret.length(); i++) {
             resultat.add(Lettre.INCORRECTE);
         }
         for (int i = 0; i < motSecret.length(); i++) {
+            if (essai.charAt(i) == motSecret.charAt(i)) resultat.set(i, Lettre.PLACEE);
+        }
+        Map<Character, Integer> dispo = lettresDisponibles();
+        for (int i = 0; i < motSecret.length(); i++) {
             char c = essai.charAt(i);
-            if (c == motSecret.charAt(i) && !(resultat.get(i) == Lettre.PLACEE)) resultat.set(i,Lettre.PLACEE);
-            else if (motSecret.indexOf(c) != -1 && !verifNotPlacedCharAreAllTaken(c)) resultat.set(i, Lettre.NON_PLACEE);
-            else resultat.set(i, Lettre.INCORRECTE);
+            if (resultat.get(i) != Lettre.PLACEE && dispo.getOrDefault(c, 0) > 0) {
+                resultat.set(i, Lettre.NON_PLACEE);
+                dispo.merge(c, -1, Integer::sum);
+            }
         }
     }
 
-    private boolean verifNotPlacedCharAreAllTaken(char c) {
+    private Map<Character, Integer> lettresDisponibles() {
+        Map<Character, Integer> dispo = new HashMap<>();
         for (int i = 0; i < motSecret.length(); i++) {
-            if (motSecret.charAt(i) == c && resultat.get(i) != Lettre.PLACEE) return false;
+            if (resultat.get(i) != Lettre.PLACEE) {
+                dispo.merge(motSecret.charAt(i), 1, Integer::sum);
+            }
         }
-        return true;
+        return dispo;
     }
 
     // vrai si toutes les lettres sont placées
